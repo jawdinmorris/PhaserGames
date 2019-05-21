@@ -74,7 +74,7 @@ function create() {
     paddleHit = this.sound.add('paddleHit');
     //Start the round
     gameOverText = this.add.text(256, 132, '', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5);
-    cheering.play();
+
     startRound();
 }
 
@@ -90,6 +90,7 @@ function startRound() {
     ball.body.velocity.y = 0;
     if (playerOneScore == 10 || playerTwoScore == 10) {
         gameOverText.setText("Game Over");
+        cheering.play();
 
     }
     else if (ball.body.velocity.x == 0 && ball.body.velocity.y == 0) {
