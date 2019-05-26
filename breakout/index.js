@@ -49,7 +49,7 @@ function roundStart() {
 }
 function hitPaddle() {
     scoreMultiplier = 1;
-    playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier );
+    playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier);
     console.log("Ping");
 }
 
@@ -57,8 +57,9 @@ function hitBrick(ball, brick) {
     console.log("Break");
     brick.disableBody(true, true);
     playerScore += (10 * scoreMultiplier);
-    scoreMultiplier +=1;
-    playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier );
+    console.log(10 * scoreMultiplier);
+    scoreMultiplier += 1;
+    playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier);
     if (bricks.countActive() == 0) {
         isGameOver();
     }
@@ -67,14 +68,16 @@ function hitBrick(ball, brick) {
 function isGameOver() {
     if (gameOver == false) {
         lives -= 1;
+        scoreMultiplier = 1;
         ballVelocity = 0;
         ball.setVelocityY(ballVelocity);
         ball.setVelocityX(ballVelocity);
         playerLifeText.setText("lives: " + lives);
 
+        playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier);
         if (bricks.countActive() == 0) {
-            playerScoreText.setText(playerScoreText.text + " You Win!");   
-        } else if (lives == 0   ) {
+            playerScoreText.setText(playerScoreText.text + " You Win!");
+        } else if (lives == 0) {
             playerScoreText.setText(playerScoreText.text + " Game Over");
             gameOver = true;
         } else {
@@ -87,6 +90,7 @@ function create() {
     //player setup
     this.add.image(0, 0, 'background').setOrigin(0, 0);
     player = this.physics.add.sprite(256, 492, 'paddle').setScale(2);
+    player.setInteractive();
     player.setOrigin(0.5, 0);
     player.body.immovable = true;
     player.setCollideWorldBounds(true);
@@ -124,14 +128,26 @@ function create() {
 function update() {
     //Player movement
     if (gameOver == false) {
-        if (cursors.right.isDown) {
-            player.body.setVelocityX(playerVelocity);
-        } else if (cursors.left.isDown) {
-            player.body.setVelocityX(-playerVelocity);
+        // if (cursors.right.isDown) {
+        //     player.body.setVelocityX(playerVelocity);
+        // } else if (cursors.left.isDown) {
+        //     player.body.setVelocityX(-playerVelocity);
+        // } else {
+        //     player.body.setVelocityX(0);
+        // }
+        // if (this.input.mousePointer.isDown) {
+            if ((this.input.mousePointer.x > player.x - 7) && (this.input.mousePointer.x < player.x + 7)) {
+            //  400 is the speed it will move towards the mous
+            player.setVelocityX(0);
+            player.setVelocityY(0);
+            //  if it's overlapping the mouse, don't move any more
+            
         } else {
-            player.body.setVelocityX(0);
+            this.physics.moveTo(player, this.input.mousePointer.x, 492, 256, null)
         }
-    }
+
+
+    // }
     //Death detect
     if (ball.y > 530) {
         isGameOver();
@@ -139,4 +155,4 @@ function update() {
 
 }
 
-
+}
