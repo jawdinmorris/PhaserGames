@@ -1,6 +1,6 @@
 playerScore = 0;
-ballVelocity = 112;
-playerVelocity = 112;
+ballVelocity = 200;
+playerVelocity = 600;
 
 lives = 3;
 
@@ -38,7 +38,14 @@ function preload() {
     this.load.image('brick', 'assets/paddle.png')
 
 }
-
+function roundStart() {
+    ball.x = 256;
+    ball.y = 487;
+    ballVelocity = 256
+    ball.setVelocityY(-ballVelocity);
+    ballVelocity = Phaser.Math.Between(-256, 256);
+    ball.setVelocityX(ballVelocity);
+}
 function hitPaddle() {
     console.log("Ping");
 }
@@ -55,14 +62,19 @@ function hitBrick(ball, brick) {
 
 function isGameOver() {
     if (gameOver == false) {
-        gameOver = true;
+        lives -= 1;
         ballVelocity = 0;
         ball.setVelocityY(ballVelocity);
         ball.setVelocityX(ballVelocity);
+        playerLifeText.setText("lives: " + lives);
+
         if (bricks.countActive() == 0) {
-            playerScoreText.setText(playerScoreText.text + " You Win!");
-        } else {
+            playerScoreText.setText(playerScoreText.text + " You Win!");   
+        } else if (lives == 0   ) {
             playerScoreText.setText(playerScoreText.text + " Game Over");
+            gameOver = true;
+        } else {
+            roundStart();
         }
     }
 }
@@ -77,6 +89,7 @@ function create() {
 
     //score
     playerScoreText = this.add.text(32, 16, 'score: 0', { fontSize: '16px', fill: '#FFF' });
+    playerLifeText = this.add.text(320, 16, 'lives: 3', { fontSize: '16px', fill: '#FFF' });
 
     //player movement
     cursors = this.input.keyboard.createCursorKeys();
@@ -90,18 +103,6 @@ function create() {
     ball.body.maxVelocity.x = 500;
     ball.body.maxVelocity.y = 500;
 
-
-    //Ball movement
-    ball.x = 256;
-    ball.y = 487;
-    ball.body.velocity.x = 0;
-    ball.body.velocity.y = 0;
-
-    if (ball.body.velocity.x == 0 && ball.body.velocity.y == 0) {
-        ball.setVelocityY(ballVelocity);
-        ball.setVelocityX(ballVelocity);
-    }
-
     //Platforms (Level 1)
     bricks = this.physics.add.group();
     bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: 45, y: 50, stepX: 70 }, setScale: { x: 2, y: 2, stepX: 0, stepY: 0 } });
@@ -114,6 +115,7 @@ function create() {
     });
 
     this.physics.add.collider(ball, bricks, hitBrick, null, this);
+    roundStart();
 }
 function update() {
     //Player movement
@@ -127,7 +129,7 @@ function update() {
         }
     }
     //Death detect
-    if (ball.y > 512) {
+    if (ball.y > 530) {
         isGameOver();
     }
 
