@@ -1,6 +1,7 @@
 playerScore = 0;
 ballVelocity = 200;
 playerVelocity = 600;
+scoreMultiplier = 1;
 
 lives = 3;
 
@@ -47,14 +48,17 @@ function roundStart() {
     ball.setVelocityX(ballVelocity);
 }
 function hitPaddle() {
+    scoreMultiplier = 1;
+    playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier );
     console.log("Ping");
 }
 
 function hitBrick(ball, brick) {
     console.log("Break");
     brick.disableBody(true, true);
-    playerScore += 10;
-    playerScoreText.setText("score: " + playerScore);
+    playerScore += (10 * scoreMultiplier);
+    scoreMultiplier +=1;
+    playerScoreText.setText("score: " + playerScore + "   x" + scoreMultiplier );
     if (bricks.countActive() == 0) {
         isGameOver();
     }
@@ -88,7 +92,7 @@ function create() {
     player.setCollideWorldBounds(true);
 
     //score
-    playerScoreText = this.add.text(32, 16, 'score: 0', { fontSize: '16px', fill: '#FFF' });
+    playerScoreText = this.add.text(32, 16, 'score: 0   x1', { fontSize: '16px', fill: '#FFF' });
     playerLifeText = this.add.text(320, 16, 'lives: 3', { fontSize: '16px', fill: '#FFF' });
 
     //player movement
