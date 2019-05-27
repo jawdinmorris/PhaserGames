@@ -6,7 +6,7 @@ lives = 3;
 gameOver = false;
 
 
-scaleRatio = window.devicePixelRatio / 3;
+scaleRatio = (window.devicePixelRatio / 3) * 2;
 
 var config = {
     type: Phaser.AUTO,
@@ -94,8 +94,9 @@ function create() {
     //PLAYER SETUP
     this.add.image(0, 0, 'background').setOrigin(0, 0);
     player = this.physics.add.sprite(game.config.width/2, game.config.height*.85, 'paddle').setScale(scaleRatio, scaleRatio);
+    player.body.height = (player.body.height*1.1);
     player.setInteractive();
-    player.setOrigin(0.5, 0);
+    player.setOrigin(0.5, -0.1);
     player.body.immovable = true;
     player.setCollideWorldBounds(true);
 
@@ -104,7 +105,7 @@ function create() {
     playerLifeText = this.add.text(game.config.width*.6, 16, 'lives: 3', { fontSize: '16px', fill: '#FFF' });
 
     //BALL SETUP
-    ball = this.physics.add.sprite(game.config.width/2, game.config.height*.6, 'ball').setOrigin(0, 3).setScale(scaleRatio, scaleRatio).setCircle(3);
+    ball = this.physics.add.sprite(game.config.width/2, game.config.height*.6, 'ball').setOrigin(0.5, 0.5).setScale(scaleRatio, scaleRatio).setCircle(15);
     ball.setCollideWorldBounds(true);
     ball.enableBody = true;
     this.physics.add.collider(ball, player, hitPaddle, null, this);
@@ -115,9 +116,9 @@ function create() {
 
     //Platforms (Level 1) - SEPERATE THIS??
     bricks = this.physics.add.group();
-    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: 45, y: 50, stepX: 70 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
-    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: 45, y: 50 + 28, stepX: 70 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
-    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: 45, y: 50 + 56, stepX: 70 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
+    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.1, stepX: game.config.width*.125 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
+    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.2, stepX: game.config.width*.125 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
+    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.3, stepX: game.config.width*.125 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
     console.log(bricks.countActive());
     bricks.children.iterate(function (child) {
         child.enableBody = true;
