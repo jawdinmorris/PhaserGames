@@ -116,9 +116,9 @@ function create() {
 
     //Platforms (Level 1) - SEPERATE THIS??
     bricks = this.physics.add.group();
-    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.1, stepX: game.config.width*.125 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
-    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.2, stepX: game.config.width*.125 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
-    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.3, stepX: game.config.width*.125 }, setScale: { x: scaleRatio, y: scaleRatio, stepX: 0, stepY: 0 } });
+    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.1, stepX: game.config.width*.125 }, setScale: { x: scaleRatio*.5, y: scaleRatio*.5, stepX: 0, stepY: 0 } });
+    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.2, stepX: game.config.width*.125 }, setScale: { x: scaleRatio*.5, y: scaleRatio*.5, stepX: 0, stepY: 0 } });
+    bricks.createMultiple({ key: 'brick', repeat: 6, setXY: { x: game.config.width*.125, y: game.config.height*.3, stepX: game.config.width*.125 }, setScale: { x: scaleRatio*.5, y: scaleRatio*.5, stepX: 0, stepY: 0 } });
     console.log(bricks.countActive());
     bricks.children.iterate(function (child) {
         child.enableBody = true;
@@ -133,7 +133,7 @@ function create() {
 function update() {
     //PLAYER MOVEMENT
     if (gameOver == false) {
-        if ((this.input.mousePointer.x > player.x - 7) && (this.input.mousePointer.x < player.x + 7)) {
+        if ((this.input.mousePointer.x > player.x - player.body.width/2) && (this.input.mousePointer.x < player.x + player.body.width/2)) {
             player.setVelocityX(0);
             player.setVelocityY(0);
         } else {
